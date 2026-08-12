@@ -14,9 +14,9 @@ Desired outcome / success criteria:
 
 - llama-server is built from source and placed in ~/bin/llama-server
 - Don't set it up to be run at launch
-- Add a script to ~/bin/ called start-llama-muse-spark.sh
+- Add a script to ~/bin/ called start-llama-muse-glimmer.sh
 - The user has been notified that the files have been placed there
-- The muse spark Q4 model from unsloth has been downloaded 
+- The muse glimmer Q4 model from unsloth has been downloaded 
 - the dflash speculative head has been downloaded
 
 Desired flags: (Apple Silicon or Nvidia targets)
@@ -57,6 +57,7 @@ Then build llama-server. it takes a long time on Nvidia and is quite fast on App
 - run the binary and hit the server with some sample requests. Expect >= 1000 prompt processing speed on nvidia and 200-250 tokens/s prompt processing on Apple Silicon.
 - Expect 50-70 tokens/second decode on Nvidia. expect lower on Mac.
 - If Nvidia and significantly lower? Raise this as an error to the user.
+- look for 'draft acceptance' in the log; not loading the spec head isn't an error in llama
 
 # if everything worked
 
