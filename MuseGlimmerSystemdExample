@@ -1,0 +1,30 @@
+[Unit]
+Description=llama-server Muse Glimmer 30B Q4_K_XL+DFlash on 3090 Ti (sm_86, 128k)
+After=network-online.target
+Wants=network-online.target
+[Service]
+Environment=CUDA_VISIBLE_DEVICES=0
+
+# Users adopting this will want to change their llama-server path
+# as well as verify llama-server is built for the correct version of cuda (sm_86 on 3090)
+
+ExecStart=/home/rk/llama-build/build/bin/llama-server \
+  --port 5803 --host 0.0.0.0 \
+  --model /mnt/models/Muse-Glimmer-30B-UD-Q4_K_XL.gguf \
+  --model-draft /mnt/models/dflash-kquant.gguf \
+  --spec-type draft-dflash --spec-draft-n-max 2 \
+  -ngl 99 -fa on -lv 4 \
+  --cache-type-k q4_0 --cache-type-v q4_0 \
+  --ctx-size 131072 --parallel 2 --kv-unified \
+  --cache-ram 4096 \
+  --reasoning on --reasoning-budget 8192 \
+  --temp 1.0 --top-p 0.95 --top-k 64 --min-p 0 \
+  --presence-penalty 0
+Restart=on-failure
+RestartSec=5
+User=root
+StandardOutput=append:/var/log/llama-server/llama-server-glimmer.log
+StandardError=append:/var/log/llama-server/llama-server-glimmer.log
+
+[Install]
+WantedBy=multi-user.target
